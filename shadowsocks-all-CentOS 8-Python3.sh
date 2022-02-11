@@ -878,7 +878,7 @@ install_prepare(){
 		install_prepare_BBR
 	fi
 	
-	echo '$bbr'
+	echo '${bbr}'
 
     echo
     echo 'Press any key to start...or Press Ctrl+C to cancel'
