@@ -146,8 +146,8 @@ auth_chain_f
 
 #BBR
 bbrs=(
-Yes, configure BBR for me
-No, I don\'t need it
+Yes,\ configure\ BBR\ for\ me
+No, I\ don\'t\ need\ it
 )
 
 # obfs
