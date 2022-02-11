@@ -8,7 +8,7 @@ export PATH
 # 
 # Modified by Gabriel-1023 <yanzeyu2019@gmail.com>
 #
-# System Required:  CentOS 8+
+# System Required:  CentOS 8+, Debian7+, Ubuntu12+
 # Software Required: Python 3
 #
 # Reference URL:
@@ -143,6 +143,13 @@ auth_chain_d
 auth_chain_e
 auth_chain_f
 )
+
+#BBR
+bbrs=(
+Yes,\ configure\ BBR\ for\ me
+No,\ I\ don\'t\ need\ BBR
+)
+
 # obfs
 obfs=(
 plain
@@ -747,6 +754,32 @@ install_prepare_protocol(){
     done
 }
 
+install_prepare_BBR(){
+	while true
+	do
+	echo -e "Do you need to configure BBR?"
+	for ((i=1;i<=${#bbrs[@]};i++ )); do
+        hint="${bbrs[$i-1]}"
+        echo -e "${green}${i}${plain}) ${hint}"
+    done
+	read -p "Which you'd select(Default: ${bbrs[0]}):" bbr
+	[ -z "$bbr" ] && bbr=1
+    expr ${bbr} + 1 &>/dev/null
+    if [ $? -ne 0 ]; then
+        echo -e "[${red}Error${plain}] Please enter a number"
+        continue
+    fi
+    if [[ "$bbr" -lt 1 || "$bbr" -gt ${#bbrs[@]} ]]; then
+        echo -e "[${red}Error${plain}] Please enter a number between 1 and ${#bbrs[@]}"
+        continue
+    fi
+	echo
+    echo "BBR Configuration = ${bbrs[${bbr}-1]}"
+    echo
+    break
+    done
+}
+
 install_prepare_obfs(){
     while true
     do
@@ -841,6 +874,9 @@ install_prepare(){
         install_prepare_protocol
         install_prepare_obfs
     fi
+	if centosversion 8; then
+		install_prepare_BBR
+	fi
 
     echo
     echo 'Press any key to start...or Press Ctrl+C to cancel'
@@ -1185,6 +1221,18 @@ install_cleanup(){
     rm -rf "${shadowsocks_libev_file}" "${shadowsocks_libev_file}".tar.gz
 }
 
+config_bbr(){
+	if [ "${bbr}" == '1' ]; then 
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+	sysctl -p
+	 
+	echo
+	echo "BBR configuration finished, please reboot the server"
+	echo
+	fi
+}
+
 install_shadowsocks(){
     disable_selinux
     install_select
@@ -1197,6 +1245,7 @@ install_shadowsocks(){
     fi
     install_main
     install_cleanup
+	config_bbr
 }
 
 uninstall_shadowsocks_python(){
