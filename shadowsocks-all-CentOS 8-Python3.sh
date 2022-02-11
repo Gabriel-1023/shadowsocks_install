@@ -1222,10 +1222,10 @@ install_cleanup(){
 }
 
 config_bbr(){
-	if ${bbr} 1; then 
+	if [ "${bbr}" == '1' ]; then 
 	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
 	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
-	ysctl -p
+	sysctl -p
 	
 	echo
 	echo "BBR configuration finished, please reboot the server"
