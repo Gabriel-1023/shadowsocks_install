@@ -8,7 +8,7 @@ export PATH
 # 
 # Modified by Gabriel-1023 <yanzeyu2019@gmail.com>
 #
-# System Required:  CentOS 8+
+# System Required:  CentOS 8+, Debian7+, Ubuntu12+
 # Software Required: Python 3
 #
 # Reference URL:
