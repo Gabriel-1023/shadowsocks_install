@@ -774,7 +774,7 @@ install_prepare_BBR(){
         continue
     fi
 	echo
-    echo "BBR Configuration = ${#bbrs[$bbr-1]}"
+    echo "BBR Configuration = ${bbrs[${bbr}-1]}"
     echo
     break
     done
@@ -877,8 +877,6 @@ install_prepare(){
 	if centosversion 8; then
 		install_prepare_BBR
 	fi
-	
-	echo '${bbr}'
 
     echo
     echo 'Press any key to start...or Press Ctrl+C to cancel'
@@ -1223,18 +1221,31 @@ install_cleanup(){
     rm -rf "${shadowsocks_libev_file}" "${shadowsocks_libev_file}".tar.gz
 }
 
+config_bbr(){
+	if ${bbr} 1; then 
+	echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+	ysctl -p
+	
+	echo
+	echo "BBR configuration finished, please reboot the server"
+	echo
+	fi
+}
+
 install_shadowsocks(){
     disable_selinux
     install_select
     install_prepare
-    install_dependencies
-    download_files
-    config_shadowsocks
-    if check_sys packageManager yum; then
-        config_firewall
-    fi
-    install_main
-    install_cleanup
+    # install_dependencies
+    # download_files
+    # config_shadowsocks
+    # if check_sys packageManager yum; then
+        # config_firewall
+    # fi
+    # install_main
+    # install_cleanup
+	config_bbr
 }
 
 uninstall_shadowsocks_python(){
