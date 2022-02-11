@@ -147,7 +147,7 @@ auth_chain_f
 #BBR
 bbrs=(
 Yes,\ configure\ BBR\ for\ me
-No, I\ don\'t\ need\ it
+No,\ I\ don\'t\ need\ it
 )
 
 # obfs
@@ -774,7 +774,7 @@ install_prepare_BBR(){
         continue
     fi
 	echo
-    echo "BBR Configuration = Yes"
+    echo "BBR Configuration = ${#bbrs[bbr]}"
     echo
     break
     done
