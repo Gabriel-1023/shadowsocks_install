@@ -8,7 +8,7 @@ export PATH
 # 
 # Modified by Gabriel-1023 <yanzeyu2019@gmail.com>
 #
-# System Required:  CentOS 8+, Debian7+, Ubuntu12+
+# System Required:  CentOS 8+
 # Software Required: Python 3
 #
 # Reference URL:
@@ -1237,14 +1237,14 @@ install_shadowsocks(){
     disable_selinux
     install_select
     install_prepare
-    # install_dependencies
-    # download_files
-    # config_shadowsocks
-    # if check_sys packageManager yum; then
-        # config_firewall
-    # fi
-    # install_main
-    # install_cleanup
+    install_dependencies
+    download_files
+    config_shadowsocks
+    if check_sys packageManager yum; then
+        config_firewall
+    fi
+    install_main
+    install_cleanup
 	config_bbr
 }
 
