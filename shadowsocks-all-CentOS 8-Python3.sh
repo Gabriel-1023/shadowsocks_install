@@ -147,7 +147,7 @@ auth_chain_f
 #BBR
 bbrs=(
 Yes,\ configure\ BBR\ for\ me
-No,\ I\ don\'t\ need\ it
+No,\ I\ don\'t\ need\ BBR
 )
 
 # obfs
@@ -774,7 +774,7 @@ install_prepare_BBR(){
         continue
     fi
 	echo
-    echo "BBR Configuration = ${#bbrs[bbr]}"
+    echo "BBR Configuration = ${#bbrs[$bbr-1]}"
     echo
     break
     done
@@ -877,6 +877,8 @@ install_prepare(){
 	if centosversion 8; then
 		install_prepare_BBR
 	fi
+	
+	echo '$bbr'
 
     echo
     echo 'Press any key to start...or Press Ctrl+C to cancel'
